@@ -12,7 +12,7 @@
 
 
 ## General Information
-- The program has 3 user input which are:
+- The program has 3 user input:
   1. the name of the BMP image
   2. the threshold value for the image
   3. the x and y coordenates of the bottom left piece of the image that you want cut
