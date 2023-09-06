@@ -87,13 +87,13 @@ int main()
     int bytes_Linha = (cab_bit.largura_img*3) + resto; // numero de bytes em uma linha
     int numBytes = (cab_bit.altura_img * bytes_Linha); // numero de bytes total usados
 
-    char *rgb = new char[numBytes]; // todos os bytes de todos os pixels
-    char *mono = new char[numBytes]; // todos os bytes de todos os pixels
+    uint8_t *rgb = new uint8_t[numBytes]; // todos os bytes de todos os pixels
+    uint8_t *mono = new uint8_t[numBytes]; // todos os bytes de todos os pixels
     cout << "- Total de bytes: " << numBytes << endl;
 
     // gravando todos os bytes
-    inFile.read(rgb, numBytes);
-    inFile.read(mono, numBytes);
+    inFile.read((char *)rgb, numBytes);
+    inFile.read((char *)mono, numBytes);
     inFile.close();
 
 
@@ -105,8 +105,8 @@ int main()
 
     // entrada de informações do usuario
     cout << "\n\tDIGITE AS COORDENADAS DE SAIDA" << endl ;
-    bool loop = true;
-    while (loop){
+    int controle = 0;
+    while (controle != 2){
         cout << "-> Posicao eixo X (0 a 488): ";
         cin >> x;
         cout << "-> Posicao eixo y (0 a 606): ";
@@ -114,10 +114,13 @@ int main()
         cout << endl << "-> Valor de limiar RGB (0 a 255): ";
         cin >> limiar_val;
         //teste - dentro dos parametros
-        if(x + 48 <= cab_bit.largura_img && y - 84 > 0 && y <= cab_bit.altura_img)
-            loop = false;
+        if(x + 84 <= cab_bit.largura_img && y - 48 > 0 && y <= cab_bit.altura_img)
+            controle++;
         if(limiar_val <= 255 && limiar_val >= 0)
-            loop = false;
+            controle++;
+        if(controle != 2){
+            cerr << "\nERRO nos parametros" << endl;
+        }
     }
 
     /**
@@ -139,15 +142,14 @@ int main()
             unsigned int offset = y * bytes_Linha + x * 3;
 
             // calculando para grayscale
-            int media = 0.3 * rgb[offset] + 0.6* rgb[offset+1]  + 0.11* rgb[offset+2];
+            int media = (30 * rgb[offset] + 59* rgb[offset+1] + 11* rgb[offset+2])/100;
 
             // passando os valores de R, G e B para grayscale
             rgb[offset] = media;         // Red
             rgb[offset + 1] = media;     // Green
             rgb[offset + 2] = media;     // Blue
-
-            if(media == -1) media = 255;
-            if(fabs(media) < limiar_val){
+            
+            if(media < limiar_val){
                 mono[offset] = 0;
                 mono[offset + 1] = 0;
                 mono[offset + 2] = 0;
@@ -160,42 +162,30 @@ int main()
         }
     }
 
-    arqtestetxt.open("texto.h", ios::out);
-    arqsaida.open("teste.h", ios::out);
-    arqsaida << "unsigned int[504] = {" << endl;
-    
     int aux = 0;
     int conta = 0;
-
     // criando o recorte da imagem
-    for (int j = y; j > y - 84; j--){       // redefinindo as coordenadas de inicio do ponteiro
-        for (int k = x; k < x + 48 ; k++){  // inferior esquerdo para superior esquerdo
-            int byte = j * bytes_Linha + k *3;
+    arqtestetxt.open("recorte.h", ios::out);
+        for(int i = y; i > y-48; i--){ 
+            for (int j = x; j < x+84; j++){
+            int byte = i * bytes_Linha + j *3;
             int pixel = mono[byte] + mono[byte + 1] + mono[byte + 2];
 
 
             if(pixel == 0){ //ponto ligado
-                conta += pow(2, aux);
+                //conta += pow(2, aux);
                 arqtestetxt << 1;
             }else {
-                conta += 0; // ponto desligad
+                //conta += 0; // ponto desligad
                 arqtestetxt << 0;
             }
 
-            aux++;
-            if(aux == 8) {
-               arqsaida << "0x" << conta << hex << ", ";
-               aux = 0;
-               conta = 0;
+            //aux++;
 
             }
+            arqtestetxt << endl;
         }
-        arqtestetxt << endl;
-        arqsaida << endl;
-    }
-    arqsaida << "};";
     
-
     arqmono.write(mono, numBytes);
     arqmono.close();
 
