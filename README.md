@@ -1,5 +1,5 @@
 # BMP image in c++
-> This project consists in editing a [BMP image](https://en.wikipedia.org/wiki/BMP_file_format) to grayscale and displayig a piece of the image on a [Nokia Display](https://www.sparkfun.com/datasheets/LCD/Monochrome/Nokia5110.pdf).
+> This project consists in editing a [BMP image](https://en.wikipedia.org/wiki/BMP_file_format) to grayscale and displaying a piece of the image on a [Nokia Display](https://www.sparkfun.com/datasheets/LCD/Monochrome/Nokia5110.pdf).
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -18,12 +18,12 @@
   3. the x and y coordenates of the bottom left piece of the image that you want cut
 - And 2 outputs:
   1. the grayscaled bmp image with the same name and _gs suffix 
-  2. a vector with the hex values for each 8 pixel of the cropped image to be used in the Nokia Display
+  2. a vector with the hex values for each 8 pixel of the cropped image to be used on the Nokia Display
   
 
 ## Technologies Used
 - C and C++
-- STM NUCLEO F446E
+- STM NUCLEO F446RE
 - Nokia Display 5110
 
 
@@ -48,7 +48,7 @@ Room for improvement:
 -->
 
 ## Contact
-Created by [@vituzm]([https://www.flynerd.pl/](https://www.instagram.com/vitozm/)) and [nicao2005](https://github.com/nicao2005) - feel free to contact us!
+Created by [vituzm]([https://www.flynerd.pl/](https://www.instagram.com/vitozm/)) and [nicao2005](https://github.com/nicao2005) - feel free to contact us!
 
 <!--  -->
 <!-- ## License -->
