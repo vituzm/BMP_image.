@@ -6,6 +6,7 @@
 #include <locale>
 #include <cmath>
 #include <cstdint>
+#include <iostream>
 
 using namespace std;
 
@@ -49,7 +50,7 @@ int main()
     inFile.open("teste.bmp", ios::in|ios::binary);
     if (!inFile) // testando se o arquivo existe
     {
-        cerr << "Arquivo saida nao pode ser aberto" << endl;
+        cout << "Arquivo saida nao pode ser aberto" << endl;
         return -1;
     }
 
@@ -107,11 +108,12 @@ int main()
     cout << "\n\tDIGITE AS COORDENADAS DE SAIDA" << endl ;
     int controle = 0;
     while (controle != 2){
+        controle = 0;
         cout << "-> Posicao eixo X (0 a 488): ";
         cin >> x;
         cout << "-> Posicao eixo y (0 a 606): ";
         cin >> y;
-        cout << endl << "-> Valor de limiar RGB (0 a 255): ";
+        cout << "-> Valor de limiar RGB (0 a 255): ";
         cin >> limiar_val;
         //teste - dentro dos parametros
         if(x + 84 <= cab_bit.largura_img && y - 48 > 0 && y <= cab_bit.altura_img)
@@ -136,10 +138,11 @@ int main()
     outFile.write((char *)&cab_arq, sizeof(cabecalho_arq));
     outFile.write((char *)&cab_bit, sizeof(cabecalho_bitMapa));
 
+    arqsaida.open("texto.h", ios::out);
     for (int y = 0; y < cab_bit.altura_img; y++) {
         for (int x = 0; x < cab_bit.largura_img; x++) {
             // calculando a posição do ponteiro rgb
-            unsigned int offset = y * bytes_Linha + x * 3;
+            int offset = y * bytes_Linha + x * 3;
 
             // calculando para grayscale
             int media = (30 * rgb[offset] + 59* rgb[offset+1] + 11* rgb[offset+2])/100;
@@ -148,7 +151,9 @@ int main()
             rgb[offset] = media;         // Red
             rgb[offset + 1] = media;     // Green
             rgb[offset + 2] = media;     // Blue
-            
+
+            arqsaida << media<< endl;
+
             if(media < limiar_val){
                 mono[offset] = 0;
                 mono[offset + 1] = 0;
@@ -162,12 +167,15 @@ int main()
         }
     }
 
+
+
     int aux = 0;
     int conta = 0;
+    arqtestetxt.open("teste.h", ios::out);
     // criando o recorte da imagem
-    arqtestetxt.open("recorte.h", ios::out);
-        for(int i = y; i > y-48; i--){ 
-            for (int j = x; j < x+84; j++){
+          // redefinindo as coordenadas de inicio do ponteiro
+        for(int i = y; i > y-48; i--){
+            for (int j = x; j < x+84; j++){// inferior esquerdo para superior esquerdo
             int byte = i * bytes_Linha + j *3;
             int pixel = mono[byte] + mono[byte + 1] + mono[byte + 2];
 
@@ -185,16 +193,33 @@ int main()
             }
             arqtestetxt << endl;
         }
-    
-    arqmono.write(mono, numBytes);
+
+
+
+    //arqsaida << endl;
+
+        /*
+
+    arqsaida << "unsigned int[504] = {" << endl;
+
+    if(aux == 8) {
+               arqsaida << "0x" << conta << hex << ", ";
+               conta = 0;
+               aux = 0;
+    arqsaida << "};";
+
+    */
+    arqmono.write((char* )mono, numBytes);
     arqmono.close();
 
-    outFile.write(rgb, numBytes);
+    outFile.write((char *)rgb, numBytes);
     outFile.close();
     arqtestetxt.close();
-    
+
     cout << "\nAs informacoes foram gravadas no projeto!" << endl;
     delete[] rgb;
     delete[] mono;
     return 0;
-}
+
+
+    }
