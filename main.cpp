@@ -88,6 +88,17 @@ int main()
     arquivo.erase((arquivo.length() - sufixo_pos), arquivo.length());
     // inverte sufixo pois foi atribuida de trás para frente
     reverse(sufixo.begin(), sufixo.end());
+
+    // Converter a string para maiusculas
+    transform(sufixo.begin(), sufixo.end(), sufixo.begin(), ::toupper);
+
+    /**
+    -> testando sse o arquivo existe ou é bmp
+    */
+    if(sufixo != ".BMP") {
+        cout << "arquivo informado não é do tipo bmp" << endl;
+        return -1;
+    }
     
     inFile.open("teste.bmp", ios::in|ios::binary);
     if (!inFile) // testando se o arquivo existe
@@ -104,35 +115,43 @@ int main()
     */
     // preenchendo os campos do cabecalho de arquivo
     inFile.read((char *)&cab_arq, sizeof(cabecalho_arq));
-    cout << "\tCABECALHO DO ARQUIVO" << endl;
-    cout << "- Assinatuura: "<< cab_arq.assinatura[0] << cab_arq.assinatura[1] << endl;
+    cout << "\tCABECALHO DO ARQUIVO: " << arquivo + sufixo <<  endl;
+    cout << "- Assinatura: "<< cab_arq.assinatura[0] << cab_arq.assinatura[1] << endl;
     cout << "- Tamanho do arquivo: " << cab_arq.tam_arquivo << " bytes" << endl;
     cout << "- Offset dos dados: " << cab_arq.dataOffset << " bytes" << endl;
 
     // preenchendo os campos do cabecalho de mapa de bit
     inFile.read((char *)&cab_bit, sizeof(cabecalho_bitMapa));
     cout << "\n\tCABECALHO DO MAPA DE BITS" << endl;
-    cout << "- Tamanho da Imagem: " << cab_bit.tam_img << endl;
     cout << "- Planos: " << cab_bit.planes << endl;
     cout << "- Largura: " << cab_bit.largura_img << endl;
     cout << "- Altura: " << cab_bit.altura_img << endl;
+    cout << "- Cores usadas: " << cab_bit.total_cores << endl;
+    cout << "- Cores importantes: " << cab_bit.cores_imp << endl;
+    cout << "- Btes po pixel: " << cab_bit.bitsPorPixel << endl;
+
 
 
     /**
     -> Calculo de numero de bytes e gravacao dos mesmos
     */
     // calculando o resto de bytes em cada linha
+    int bytes_por_pixel = cab_bit.bitsPorPixel/8; // quantos bytes tem em cada pixel
     int resto = 0;
-    if(cab_bit.largura_img%4 != 0){
-        resto += (4 - (cab_bit.largura_img%4));
+    if(cab_bit.largura_img%4 != 0)
+    {
+        resto = (4 - ((cab_bit.largura_img*bytes_por_pixel)%4));
     }
 
-    int bytes_Linha = (cab_bit.largura_img*3) + resto; // numero de bytes em uma linha
+    int bytes_Linha = (cab_bit.largura_img*bytes_por_pixel) + resto; // numero de bytes em uma linha
+    int numBytes = (cab_bit.altura_img * bytes_Linha); // numero de bytes total usados
+
+
+    int bytes_Linha = (cab_bit.largura_img*bytes_por_pixel) + resto; // numero de bytes em uma linha
     int numBytes = (cab_bit.altura_img * bytes_Linha); // numero de bytes total usados
 
     uint8_t *rgb = new uint8_t[numBytes]; // todos os bytes de todos os pixels
     uint8_t *mono = new uint8_t[numBytes]; 
-    cout << "- Total de bytes: " << numBytes << endl;
 
     // gravando todos os bytes
     inFile.read((char *)rgb, numBytes);
@@ -146,7 +165,7 @@ int main()
     int limiar_val;
 
     // entrada de informações do usuario
-    cout << "\n\tDIGITE AS COORDENADAS DE SAIDA" << endl ;
+    cout << "\n\tDIGITE AS COORDENADAS DO RECORTE - (canto inferior esquerdo)" << endl ;
     int controle = 0;
     while (controle != 2){
         controle = 0;
@@ -183,7 +202,7 @@ int main()
     for (int y = 0; y < cab_bit.altura_img; y++) {
         for (int x = 0; x < cab_bit.largura_img; x++) {
             // calculando a posição do ponteiro rgb
-            int offset = y * bytes_Linha + x * 3;
+            int offset = y * bytes_Linha + x * bytes_por_pixel;
 
             // calculando para grayscale
             int media = (30 * rgb[offset] + 59* rgb[offset+1] + 11* rgb[offset+2])/100;
@@ -216,8 +235,10 @@ int main()
     //criando um arquivo para o recorte da imagem
     corte_img.open("arquivoteste.h", ios::out);
 
-    // criando o recorte da imagem
-    // redefinindo as coordenadas de inicio do ponteiro
+     /**
+    -> Criando o recorte da imagem
+    */
+
     int valores[48][84];
     y = cab_bit.altura_img - y + 48; // invertedo a coordenada pela imagem estar ivertida
     for(int i = y; i > y -48; i--) // como o processo é retrogrado começamos com o canto inferior esquerdo da matriz e vamos subindo
@@ -227,7 +248,7 @@ int main()
 
             int cord_x = x + j;
 
-            int byte_pos = i * bytes_Linha + cord_x *3;
+            int byte_pos = i * bytes_Linha + cord_x * bytes_por_pixel;
             int pixel = mono[byte_pos] + mono[byte_pos + 1] + mono[byte_pos + 2];
 
             if(pixel == 0)  //pixel ligado na escala de mono
