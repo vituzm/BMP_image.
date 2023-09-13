@@ -320,9 +320,9 @@ int main()
 
             if(j == 5 && x1 == 83)  // caso chegue no ultimo valor fechar as chaves da variavel
             {
-                arqsaida << "0d" << conta << " };";
+                arqsaida << "0x" << conta << hex << " };";
             }
-            else arqsaida << "0d" << conta << ", ";
+            else arqsaida << "0x" << conta << hex << ", ";
 
         }
 
