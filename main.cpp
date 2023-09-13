@@ -73,7 +73,7 @@ int main()
             if(arquivo[tam] == '.')  // se acharmos o "." do sufixo de tipo de arquivo
             {
                 erro = false;
-                break;
+                break; // fim do loop
             }
             else if(tam == 1)  // se não houver ".tipo"
             {
