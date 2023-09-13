@@ -282,8 +282,9 @@ int main()
     }
 
     // criando um arquivo para o recorte da imagem
-    corte_img.open("arquivoteste.h", ios::out);
-
+    corte_img.open(arquivo + "_recorte" + ".txt", ios::out);
+    corte_img << "<| IMPRESSÃO DA IMAGEM RECORTADA POR 1's E 0's |>" << endl;
+    
     // imprimindo a imagem recortada
     for(int p = 0; p < 48; p++){
         for(int o = 0; o < 84; o++){
