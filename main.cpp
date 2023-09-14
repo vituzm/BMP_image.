@@ -137,7 +137,7 @@ int main()
     cout << "- Altura: " << cab_bit.altura_img << endl;
     cout << "- Cores usadas: " << cab_bit.total_cores << endl;
     cout << "- Cores importantes: " << cab_bit.cores_imp << endl;
-    cout << "- Bytes por pixel: " << cab_bit.bitsPorPixel << endl;
+    cout << "- Bits por pixel: " << cab_bit.bitsPorPixel << endl;
 
 
 
