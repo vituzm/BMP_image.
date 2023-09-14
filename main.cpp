@@ -141,7 +141,7 @@ int main()
 
      // testando se a imagem é muito pequena
     if(cab_bit.altura_img < 49 || cab_bit.largura_img < 85){ 
-        cerr << "ERRO: a imagem eh muito pequena." << endl;
+        cerr << "\nERRO: a imagem eh muito pequena." << endl;
         return -1;
     }
     
