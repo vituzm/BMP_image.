@@ -97,7 +97,6 @@ int main()
     cout << "Arquivo inserido: " << arquivo+sufixo << endl << endl;
 
 
-
     /**
     -> Testando se o arquivo existe e se eh .BMP
     */
@@ -112,8 +111,6 @@ int main()
         cout << "ERRO: o arquivo saida nao pode ser aberto." << endl;
         return -1;
     }
-
-
 
     /**
     -> Informacoes sobre o cabecalho do arquivo e sobre a imagem
@@ -138,8 +135,11 @@ int main()
     cout << "- Cores usadas: " << cab_bit.total_cores << endl;
     cout << "- Cores importantes: " << cab_bit.cores_imp << endl;
     cout << "- Bits por pixel: " << cab_bit.bitsPorPixel << endl;
-
-
+    
+    if(cab_bit.altura_img < 49 || cab_bit.largura_img < 85){ // testando se a imagem é muito pequena
+        cout << "!!!IMAGEM MUITO PEQUENA!!! " << end;
+        return 0 ;
+    }
 
     /**
     -> Calculo de numero de bytes e gravacao dos mesmos
@@ -282,7 +282,7 @@ int main()
 
     }
 
-    // criando um arquivo para o recorte da imagem
+    // imprimindo a imagem recortada em um arquivo txt com o nome original (ex: teste.txt)
     corte_img.open(arquivo + "_recorte" + ".txt", ios::out);
     corte_img << "-> IMPRESSÃO DA IMAGEM RECORTADA POR 1's E 0's" << endl;
 
@@ -305,14 +305,14 @@ int main()
     arqsaida << "unsigned const char " + arquivo +"[504] = {" << endl;
 
     int *ponteiro = &valores[0][0];
-    for(int j = 0; j < 6; j++)
+    for(int j = 0; j < 6; j++)// 6 vezes as 8 linhas
     {
-        for(int x1 = 0; x1 < 84; x1++)
+        for(int x1 = 0; x1 < 84; x1++)// 8 linhas 84 vezes
         {
             int conta = 0;
-            for(int y1 = 0; y1 < 8; y1++)
+            for(int y1 = 0; y1 < 8; y1++)// 8 linhas representando 1 byte no display nokia
             {
-                if(*(ponteiro + (j * 8*84) + (y1* 84) + x1) == 1)  // ponto ligado
+                if(*(ponteiro + (j * 8*84) + (y1* 84) + x1) == 1)  // calculando para percorrer a cada 8 linhas 84 vezes <- 6 vezes 
                 {
                     conta += pow(2, y1); // calculando o valor em hexadecimal
                 }
