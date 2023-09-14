@@ -117,7 +117,7 @@ int main()
 
     /**
     -> Informacoes sobre o cabecalho do arquivo e sobre a imagem
-    **/
+    */
 
     cabecalho_arq cab_arq; // cabecalho de arquivo
     cabecalho_bitMapa cab_bit; // cabecalho de mapa de bits
@@ -147,13 +147,14 @@ int main()
 
     int bytes_por_pixel = cab_bit.bitsPorPixel/8; // quantos bytes tem em cada pixel
     int resto = 0;
-    if(cab_bit.largura_img%4 != 0) // calculando o resto de bytes em cada linha
+    if((cab_bit.largura_img*bytes_por_pixel)%4 != 0) // calculando o resto de bytes em cada linha
     {
         resto = (4 - ((cab_bit.largura_img*bytes_por_pixel)%4));
     }
 
     int bytes_Linha = (cab_bit.largura_img*bytes_por_pixel) + resto; // numero de bytes em uma linha
     int numBytes = (cab_bit.altura_img * bytes_Linha); // numero de bytes total usados
+
 
     uint8_t *rgb = new uint8_t[numBytes]; // todos os bytes de todos os pixels
     uint8_t *mono = new uint8_t[numBytes];
@@ -200,7 +201,7 @@ int main()
     -> Criacao do arquivo de grayscale
     */
 
-    grayscale_bmp.open(arquivo + "_gs" + ".bmp", ios::out);
+    grayscale_bmp.open(arquivo + "_gs" + ".bmp", ios::out|ios::binary);
     grayscale_bmp.write((char *)&cab_arq, sizeof(cabecalho_arq));
     grayscale_bmp.write((char *)&cab_bit, sizeof(cabecalho_bitMapa));
 
@@ -208,7 +209,7 @@ int main()
     -> Criacao do arquivo de mono
     */
 
-    arqmono.open(arquivo + "_mono" + sufixo, ios::out);
+    arqmono.open(arquivo + "_mono" + sufixo, ios::out|ios::binary);
     arqmono.write((char *)&cab_arq, sizeof(cabecalho_arq));
     arqmono.write((char *)&cab_bit, sizeof(cabecalho_bitMapa));
 
@@ -218,7 +219,7 @@ int main()
         for (int x = 0; x < cab_bit.largura_img; x++)
         {
             // calculando a posicao do ponteiro rgb
-            int offset = y * bytes_Linha + x * bytes_por_pixel;
+            int offset = (y * bytes_Linha) + (x * bytes_por_pixel);
 
             // calculando para grayscale
             int media = (30 * rgb[offset] + 59* rgb[offset+1] + 11* rgb[offset+2])/100;
@@ -283,8 +284,8 @@ int main()
 
     // criando um arquivo para o recorte da imagem
     corte_img.open(arquivo + "_recorte" + ".txt", ios::out);
-    corte_img << "<| IMPRESSÃO DA IMAGEM RECORTADA POR 1's E 0's |>" << endl;
-    
+    corte_img << "-> IMPRESSÃO DA IMAGEM RECORTADA POR 1's E 0's" << endl;
+
     // imprimindo a imagem recortada
     for(int p = 0; p < 48; p++){
         for(int o = 0; o < 84; o++){
@@ -301,7 +302,7 @@ int main()
     */
 
     arqsaida.open(arquivo + ".h", ios::out);
-    arqsaida << "uint8_t " + arquivo +"[504] = {" << endl;
+    arqsaida << "unsigned const char " + arquivo +"[504] = {" << endl;
 
     int *ponteiro = &valores[0][0];
     for(int j = 0; j < 6; j++)
@@ -311,7 +312,7 @@ int main()
             int conta = 0;
             for(int y1 = 0; y1 < 8; y1++)
             {
-                if(*(ponteiro + (j * 672) + (y1* 84) + x1) == 1)  // ponto ligado
+                if(*(ponteiro + (j * 8*84) + (y1* 84) + x1) == 1)  // ponto ligado
                 {
                     conta += pow(2, y1); // calculando o valor em hexadecimal
                 }
@@ -321,9 +322,9 @@ int main()
 
             if(j == 5 && x1 == 83)  // caso chegue no ultimo valor fechar as chaves da variavel
             {
-                arqsaida << "0x" << conta << hex << " };";
+                arqsaida << "0x" << hex << conta << " };";
             }
-            else arqsaida << "0x" << conta << hex << ", ";
+            else arqsaida << "0x" << hex << conta << ", ";
 
         }
 
