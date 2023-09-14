@@ -137,7 +137,7 @@ int main()
     cout << "- Bits por pixel: " << cab_bit.bitsPorPixel << endl;
     
     if(cab_bit.altura_img < 49 || cab_bit.largura_img < 85){ // testando se a imagem é muito pequena
-        cout << "!!!IMAGEM MUITO PEQUENA!!! " << end;
+        cout << "!!!IMAGEM MUITO PEQUENA!!! " << endl;
         return 0 ;
     }
 
