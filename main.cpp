@@ -112,6 +112,12 @@ int main()
         return -1;
     }
 
+    if(cab_bit.altura_img < 49 || cab_bit.largura_img < 85){ // testando se a imagem é muito pequena
+        cerr << "!!!IMAGEM MUITO PEQUENA!!! " << endl;
+        return 0 ;
+    }
+
+
     /**
     -> Informacoes sobre o cabecalho do arquivo e sobre a imagem
     */
@@ -136,11 +142,7 @@ int main()
     cout << "- Cores importantes: " << cab_bit.cores_imp << endl;
     cout << "- Bits por pixel: " << cab_bit.bitsPorPixel << endl;
     
-    if(cab_bit.altura_img < 49 || cab_bit.largura_img < 85){ // testando se a imagem é muito pequena
-        cout << "!!!IMAGEM MUITO PEQUENA!!! " << endl;
-        return 0 ;
-    }
-
+    
     /**
     -> Calculo de numero de bytes e gravacao dos mesmos
     */
