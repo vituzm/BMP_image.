@@ -114,19 +114,17 @@ int main()
 
     
 
-
     /**
     -> Informacoes sobre o cabecalho do arquivo e sobre a imagem
     */
     
-
     cabecalho_arq cab_arq; // cabecalho de arquivo
     cabecalho_bitMapa cab_bit; // cabecalho de mapa de bits
 
     // testando se a imagem é muito pequena
     if(cab_bit.altura_img < 49 || cab_bit.largura_img < 85){ 
-        cerr << "!!!IMAGEM MUITO PEQUENA!!! " << endl;
-        return 0 ;
+        cerr << "ERRO: a imagem eh muito pequena." << endl;
+        return -1;
     }
 
     // preenchendo os campos do cabecalho de arquivo
@@ -146,6 +144,7 @@ int main()
     cout << "- Cores importantes: " << cab_bit.cores_imp << endl;
     cout << "- Bits por pixel: " << cab_bit.bitsPorPixel << endl;
     
+
     
     /**
     -> Calculo de numero de bytes e gravacao dos mesmos
