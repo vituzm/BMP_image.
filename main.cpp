@@ -112,18 +112,22 @@ int main()
         return -1;
     }
 
-    if(cab_bit.altura_img < 49 || cab_bit.largura_img < 85){ // testando se a imagem é muito pequena
-        cerr << "!!!IMAGEM MUITO PEQUENA!!! " << endl;
-        return 0 ;
-    }
+    
 
 
     /**
     -> Informacoes sobre o cabecalho do arquivo e sobre a imagem
     */
+    
 
     cabecalho_arq cab_arq; // cabecalho de arquivo
     cabecalho_bitMapa cab_bit; // cabecalho de mapa de bits
+
+    // testando se a imagem é muito pequena
+    if(cab_bit.altura_img < 49 || cab_bit.largura_img < 85){ 
+        cerr << "!!!IMAGEM MUITO PEQUENA!!! " << endl;
+        return 0 ;
+    }
 
     // preenchendo os campos do cabecalho de arquivo
     inFile.read((char *)&cab_arq, sizeof(cabecalho_arq));
