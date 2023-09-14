@@ -111,7 +111,6 @@ int main()
         cout << "ERRO: o arquivo saida nao pode ser aberto." << endl;
         return -1;
     }
-
     
 
     /**
@@ -121,11 +120,7 @@ int main()
     cabecalho_arq cab_arq; // cabecalho de arquivo
     cabecalho_bitMapa cab_bit; // cabecalho de mapa de bits
 
-    // testando se a imagem é muito pequena
-    if(cab_bit.altura_img < 49 || cab_bit.largura_img < 85){ 
-        cerr << "ERRO: a imagem eh muito pequena." << endl;
-        return -1;
-    }
+   
 
     // preenchendo os campos do cabecalho de arquivo
     inFile.read((char *)&cab_arq, sizeof(cabecalho_arq));
@@ -143,6 +138,12 @@ int main()
     cout << "- Cores usadas: " << cab_bit.total_cores << endl;
     cout << "- Cores importantes: " << cab_bit.cores_imp << endl;
     cout << "- Bits por pixel: " << cab_bit.bitsPorPixel << endl;
+
+     // testando se a imagem é muito pequena
+    if(cab_bit.altura_img < 49 || cab_bit.largura_img < 85){ 
+        cerr << "ERRO: a imagem eh muito pequena." << endl;
+        return -1;
+    }
     
 
     
