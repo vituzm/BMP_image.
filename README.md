@@ -5,6 +5,7 @@
 * [General Info](#general-information)
 * [Technologies Used](#technologies-used)
 * [Usage](#usage)
+* [Fotos](#fotos)
 * [Project Status](#project-status)
 * [Room for Improvement](#room-for-improvement)
 * [Contact](#contact)
@@ -42,6 +43,11 @@ Project is: finished
 
 Room for improvement;
 - Naming variabels
+
+## Fotos
+<img src="https://github.com/vituzm/BMP_image./assets/134985122/48714152-004a-4a21-8c04-eca6c08364d2" alt = "Ford Mustang Shelby gt500 4k" width="50%" height="50%" />
+
+
 
 <!--  
 ## Acknowledgements
