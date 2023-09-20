@@ -24,7 +24,7 @@
 ## Usage
 - The program has 3 user input:
   1. the name of the BMP image
-  2. the threshold value for the image
+  2. the threshold value for the image (from 0 to 255)
   3. the bottom left x and y coordenates to display the image on the Nokia
      
 - And 2 outputs:
@@ -45,22 +45,22 @@ Room for improvement;
 - Naming variabels
 
 ## Fotos
-<img src="https://github.com/vituzm/BMP_image./assets/134985122/48714152-004a-4a21-8c04-eca6c08364d2" alt = "Ford Mustang Shelby gt500 4k" width="50%" height="50%" />
+- Ford Mustang Shelby gt500 -> RGB
+<img src="https://github.com/vituzm/BMP_image./assets/134985122/48714152-004a-4a21-8c04-eca6c08364d2" alt = "Ford Mustang Shelby gt500 4k" width="50%" height="20%"/>
 
+&nbsp; 
+- Ford Mustang Shelby gt500 -> GrayScale
+<img src="https://github.com/vituzm/BMP_image./assets/134985122/a979f95b-69ba-4bb2-8b9b-0edc73a86df2" alt = "Ford Mustang Shelby gt500 grayscale" width="50%" height="20%"/>
 
+&nbsp;
+- Ford Mustang Shelby gt500 -> Mono (*note: the threshold value is set to 90 here)
+<img src="https://github.com/vituzm/BMP_image./assets/134985122/8692683d-950c-44ff-b009-ce93d843e356" alt = "Ford Mustang Shelby gt500 mono" width="50%" height="20%"/>
 
-<!--  
-## Acknowledgements
-- This project was an ideia of 
-- This project was based on [this tutorial](https://www.example.com).
-- Many thanks to...
--->
+&nbsp;
+- Cropped image on a [Nokia Display](https://www.sparkfun.com/datasheets/LCD/Monochrome/Nokia5110.pdf) (*note: the cropped image is the snake from the car model*)
+<img src="https://github.com/vituzm/BMP_image./assets/134985122/ea4aa474-23cb-4204-b058-4570835bb942" alt = "Crop" width="50%" height="20%"/> 
+
 
 ## Contact
 Created by [vituzm](https://github.com/vituzm) and [nicao2005](https://github.com/nicao2005) - feel free to contact us!
 
-<!--  -->
-<!-- ## License -->
-<!-- This project is open source and available under the [... License](). -->
-
-<!-- You don't have to include all sections - just the one's relevant to your project -->
