@@ -6,7 +6,6 @@
 * [Technologies Used](#technologies-used)
 * [Usage](#usage)
 * [Fotos](#fotos)
-* [Project Status](#project-status)
 * [Room for Improvement](#room-for-improvement)
 * [Contact](#contact)
 <!-- [Acknowledgements](#acknowledgements) -->
@@ -35,9 +34,6 @@
 - After given the name of the image file, there is a table with useful information of the bmp header
   
 - Download all files and include your bmp image and its name when executing `image_project.exe` as well
-
-## Project Status
-Project is: finished
 
 ## Room for Improvement 
 
